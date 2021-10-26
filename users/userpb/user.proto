@@ -1,0 +1,84 @@
+
+syntax = "proto3";
+package proto;
+option go_package = "./users/userpb";
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+import "google/api/annotations.proto";
+
+//services
+service UserService{
+    rpc VerifyUser(VerifyUserRequest) returns (VerifyUserResponse);
+    rpc ListArticleByUser(ListArticlesByUserRequest) returns (ListUsersResponse);
+    rpc ListUser(google.protobuf.Empty) returns (ListUsersResponse){
+    		option (google.api.http) ={
+			get: "/v1/user"
+		};    
+    };
+    rpc CreateUser(CreateUserRequest) returns (UserId){
+    		option (google.api.http) ={
+			post: "/v1/user"
+			body: "user"
+		};
+    };
+    rpc DeleteUser(UserId) returns (Response);
+    rpc UpdateUser(CreateUserRequest) returns (CreateUserRequest);
+    rpc GetOneUser(UserId) returns (CreateUserRequest);
+}
+
+//Message
+message User {
+    string id = 1;
+    string name = 2;
+    string email = 3;
+    string password = 4;
+
+    google.protobuf.Timestamp created_at = 5;
+	google.protobuf.Timestamp updated_at = 6;
+}
+
+message VerifyUserRequest {
+    uint32 user_id = 1;
+}
+
+message VerifyUserResponse {
+    enum UserExists {
+        OFF = 0;
+        ON = 1;
+    }
+    UserExists is_exist = 1;
+}
+//CreateUser
+message CreateUserRequest {
+    string id = 1;
+    string name = 2;
+    string email = 3;
+    string password = 4;
+}
+
+//Response
+message Response {
+    string msg = 1;
+}
+
+//Request
+message UserRequest {
+    User user = 1;
+}
+
+//Response
+message UserId {
+    string id = 1;
+}
+
+//List users
+message ListArticlesByUserRequest {
+    string id = 1;
+
+}
+
+message ListUsersResponse {
+    repeated User users = 1;
+}

@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: container-grpc-user
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-go-user
+  template:
+    metadata:
+      labels:
+        app: api-go-user
+    spec:
+      containers:
+      - name: container-grpc-user
+        image: igorarizacuemby/go-images
+        ports: 
+        - containerPort: 5051
+        env:
+          - name: PGUSER
+            valueFrom:
+              configMapKeyRef:
+                name: app-config-user
+                key: PGUSER
+          - name: PGPASSWORD
+            valueFrom:
+              configMapKeyRef:
+                name: app-config-user
+                key: PGPASSWORD
+          - name: PGHOST
+            valueFrom:
+              configMapKeyRef:
+                name: app-config-user
+                key: PGHOST
+          - name: PGPORT
+            valueFrom:
+              configMapKeyRef:
+                name: app-config-user
+                key: PGPORT
+          - name: PGDATABASE
+            valueFrom:
+              configMapKeyRef:
+                name: app-config-user
+                key: PGDATABASE
