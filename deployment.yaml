@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: container-grpc-user
-        image: igorarizacuemby/go-images
+        image: igorarizacuemby/go-images:26102021.2
         ports: 
         - containerPort: 5051
         env:
